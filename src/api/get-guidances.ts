@@ -9,6 +9,7 @@ export interface Guidance {
   solicitacao_aceita: boolean
   data_aprovacao: string | null
   data_reprovacao: string | null
+  data_finalizacao: string | null
   justificativa_reprovacao: string | null
   total_atividades: number
 }
@@ -18,6 +19,8 @@ interface IGetGuidances {
   type: 'aluno' | 'orientador' | 'coordenador'
   name?: string | null
   status?: string | null
+  teacher?: string | null
+  idCourse?: string | null
 }
 
 export async function getGuidances({
@@ -25,6 +28,8 @@ export async function getGuidances({
   type,
   name = null,
   status = null,
+  teacher = null,
+  idCourse = null,
 }: IGetGuidances): Promise<Guidance[]> {
   const response = await api.get<Guidance[]>(
     `/tccGuidances/findGuidances/${studentId}/${type}`,
@@ -32,6 +37,8 @@ export async function getGuidances({
       params: {
         name,
         status,
+        teacher,
+        idCourse,
       },
     },
   )

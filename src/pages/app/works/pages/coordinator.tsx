@@ -27,7 +27,7 @@ import { getGuidances } from '../../../../api/get-guidances'
 import { CardSkeleton } from '../partials/card-skeleton'
 import { WorkFilters } from '../partials/works-filters'
 
-export function TeacherWorks() {
+export function CoordinatorWorks() {
   const userType = getUserType()
   const navigate = useNavigate()
   const [searchParams, _] = useSearchParams()
@@ -35,15 +35,18 @@ export function TeacherWorks() {
 
   const name = searchParams.get('name')
   const status = searchParams.get('status')
+  const teacher = searchParams.get('teacher')
 
   const { data: works, isLoading: isLoadingGuidances } = useQuery({
-    queryKey: ['works', user!.id, userType, name, status],
+    queryKey: ['works', user, userType, name, status, teacher],
     queryFn: () =>
       getGuidances({
         studentId: user!.id,
         type: userType,
         name,
         status: status === 'all' ? null : status,
+        teacher: teacher === 'all' ? null : teacher,
+        idCourse: user!.id_curso,
       }),
   })
 
@@ -124,6 +127,12 @@ export function TeacherWorks() {
                     </CardDescription>
                   </div>
                   <div className="flex justify-between">
+                    <CardDescription>
+                      Orientador:{' '}
+                      <span className="font-semibold">{work.orientador}</span>
+                    </CardDescription>
+                  </div>
+                  <div className="flex justify-between">
                     <CardDescription
                       className={cn(
                         'font-semibold',
@@ -136,11 +145,13 @@ export function TeacherWorks() {
                     >
                       Status orientação:{' '}
                       <span className="font-semibold">
-                        {!work.solicitacao_aceita && !work.data_reprovacao
-                          ? 'Pendente'
-                          : !work.solicitacao_aceita && work.data_reprovacao
-                            ? 'Recusada'
-                            : 'Aceita'}
+                        {work.data_finalizacao
+                          ? 'Concluído'
+                          : !work.solicitacao_aceita && !work.data_reprovacao
+                            ? 'Pendente'
+                            : !work.solicitacao_aceita && work.data_reprovacao
+                              ? 'Recusada'
+                              : 'Aceita'}
                       </span>
                     </CardDescription>
                     {work.justificativa_reprovacao && (
