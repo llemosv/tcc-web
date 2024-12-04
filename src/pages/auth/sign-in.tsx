@@ -53,21 +53,16 @@ export function SignIn() {
   return (
     <>
       <Helmet title="Login" />
-      <div className="p-8">
-        <div className="flex w-[340px] flex-col justify-center gap-6">
+      <div className="flex min-h-screen items-center justify-center p-4 sm:p-8">
+        <div className="flex w-full max-w-md flex-col justify-center gap-6">
           <div className="flex flex-col gap-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Acessar painel
-            </h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Acessar painel</h1>
             <p className="text-sm text-muted-foreground">
               Acompanhe os seus Trabalhos de Conclusão de Curso!
             </p>
           </div>
-
-          <form
-            onSubmit={handleSubmit(handleSignIn)}
-            className="flex flex-col gap-4"
-          >
+  
+          <form onSubmit={handleSubmit(handleSignIn)} className="flex flex-col gap-4">
             <div className="space-y-2">
               <Label htmlFor="email">E-mail</Label>
               <Input id="email" type="email" {...register('email')} />
@@ -84,7 +79,7 @@ export function SignIn() {
             >
               Esqueci minha senha
             </Button>
-
+  
             <Button type="submit" disabled={!isValid || isSubmitting}>
               Acessar
             </Button>
@@ -93,4 +88,5 @@ export function SignIn() {
       </div>
     </>
   )
+  
 }
